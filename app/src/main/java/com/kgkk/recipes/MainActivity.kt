@@ -4,6 +4,7 @@ import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 
 class MainActivity : AppCompatActivity(), Listener {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -12,8 +13,13 @@ class MainActivity : AppCompatActivity(), Listener {
     }
 
     override fun itemClicked(id: Int) {
-        val intent = Intent(this, DetailActivity::class.java)
-        intent.putExtra(Constants.EXTRA_COCKTAIL_ID, id)
-        startActivity(intent)
+        val fragmentContainer: View? = findViewById(R.id.fragment_container);
+        if (fragmentContainer != null) {
+
+        } else {
+            val intent = Intent(this, DetailActivity::class.java)
+            intent.putExtra(Constants.EXTRA_COCKTAIL_ID, id)
+            startActivity(intent)
+        }
     }
 }
