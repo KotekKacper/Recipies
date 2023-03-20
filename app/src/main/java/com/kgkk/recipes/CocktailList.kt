@@ -16,7 +16,7 @@ object CocktailList {
 Sposób przygotowania:
             Wszystkie składniki wymieszać w szklance z lodem
             i ozdobić selerem naciowym."""),
-        Cocktail("Bloody Elisa",
+        Cocktail("Bloody Eliza",
             """Składniki:
             0 ml wódki
             0 ml soku z cytryny

@@ -10,7 +10,7 @@ import androidx.fragment.app.Fragment
 
 class RecipeDetailFragment : Fragment() {
 
-    private var cocktailId: Int = 0
+    private var cocktailId: Int? = null
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -25,7 +25,7 @@ class RecipeDetailFragment : Fragment() {
         val view = view
         if (view != null) {
             val title = view.findViewById<View>(R.id.textTitle) as TextView
-            val (name, recipe) = CocktailList.cocktailList[cocktailId]
+            val (name, recipe) = CocktailList.cocktailList[cocktailId!!]
             title.text = name
             val description = view.findViewById<View>(R.id.textDescription) as TextView
             description.text = recipe
