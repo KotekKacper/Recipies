@@ -1,4 +1,4 @@
-package com.kgkk.recipies
+package com.kgkk.recipes
 
 import org.junit.Test
 

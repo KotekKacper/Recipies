@@ -4,11 +4,11 @@ plugins {
 }
 
 android {
-    namespace 'com.kgkk.recipies'
+    namespace 'com.kgkk.recipes'
     compileSdk 33
 
     defaultConfig {
-        applicationId "com.kgkk.recipies"
+        applicationId "com.kgkk.recipes"
         minSdk 29
         targetSdk 33
         versionCode 1
