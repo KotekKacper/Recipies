@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 
 
 class RecipeDetailFragment : Fragment() {
@@ -15,6 +16,12 @@ class RecipeDetailFragment : Fragment() {
     {
         super.onCreate(savedInstanceState)
         if (savedInstanceState != null) {
+            val stoper = StoperFragment()
+            val ft: FragmentTransaction = childFragmentManager.beginTransaction()
+            ft.add(R.id.stoper_container, stoper)
+            ft.addToBackStack(null)
+            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+            ft.commit()
             cocktailId = savedInstanceState.getLong("cocktailId").toInt()
         }
     }

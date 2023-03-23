@@ -5,6 +5,7 @@ import android.os.Handler
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 
@@ -30,6 +31,12 @@ class StoperFragment : Fragment(), View.OnClickListener {
         // Inflate the layout for this fragment
         val layout: View = inflater.inflate(R.layout.fragment_stoper, container, false)
         runStoper(layout)
+        val startButton: Button = layout.findViewById<View>(R.id.start_button) as Button
+        startButton.setOnClickListener(this)
+        val stopButton: Button = layout.findViewById<View>(R.id.stop_button) as Button
+        stopButton.setOnClickListener(this)
+        val resetButton: Button = layout.findViewById<View>(R.id.reset_button) as Button
+        resetButton.setOnClickListener(this)
         return layout
     }
 
