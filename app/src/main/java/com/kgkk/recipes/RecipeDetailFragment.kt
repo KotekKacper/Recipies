@@ -32,10 +32,11 @@ class RecipeDetailFragment : Fragment() {
         val view = view
         if (view != null) {
             val title = view.findViewById<View>(R.id.textTitle) as TextView
-            val (name, recipe) = CocktailList.cocktailList[cocktailId!!]
+            val (name, ingredients, instructions) = CocktailList.cocktailList[cocktailId!!]
             title.text = name
             val description = view.findViewById<View>(R.id.textDescription) as TextView
-            description.text = recipe
+            description.text = "${ingredients.replace("|", "\n")}\n\n" +
+                                "${instructions}"
         }
     }
 
