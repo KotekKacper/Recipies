@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
@@ -58,12 +59,15 @@ class RecipeDetailFragment : Fragment() {
     private fun insertNestedFragment() {
         val childFragment: Fragment = CountdownTimerFragment()
         val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
-        transaction.replace(R.id.counter_container, childFragment).commit()
+        transaction.add(R.id.counter_container, childFragment).commit()
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        insertNestedFragment()
+        val addButton = view.findViewById<Button>(R.id.add_timer_button)
+        addButton.setOnClickListener {
+            insertNestedFragment()
+        }
     }
 }
