@@ -2,14 +2,71 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_height="match_parent"
     android:layout_width="match_parent"
+    android:padding="16dp"
+
     android:orientation="vertical">
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
         android:textAppearance="?android:attr/textAppearanceLarge"
         android:id="@+id/textTitle" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+
     <TextView
         android:layout_height="wrap_content"
         android:layout_width="wrap_content"
-        android:id="@+id/textDescription" />
+        android:layout_gravity="start"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:text="@string/recipie_ingredients"
+        android:id="@+id/titleIngredients" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/textIngredients" />
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="start"
+            android:textAppearance="?android:textAppearanceMedium"
+            android:text="@string/recipie_servings"
+            android:id="@+id/titleServings" />
+
+        <TextView
+            android:layout_height="wrap_content"
+            android:layout_width="wrap_content"
+            android:layout_gravity="bottom"
+            android:id="@+id/textServings" />
+
+    </LinearLayout>
+
+    <Space
+        android:layout_width="wrap_content"
+        android:layout_height="20dp"/>
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:layout_gravity="start"
+        android:textAppearance="?android:textAppearanceMedium"
+        android:text="@string/recipie_instructions"
+        android:id="@+id/titleInstructions" />
+
+    <TextView
+        android:layout_height="wrap_content"
+        android:layout_width="wrap_content"
+        android:id="@+id/textInstructions" />
 </LinearLayout>

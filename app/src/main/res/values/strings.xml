@@ -3,4 +3,8 @@
     <string name="detail_button">Pokaż przepis</string>
     <string name="recipie_name">Nazwa przepisu</string>
     <string name="recipie_content">Zawartość przepisu</string>
+    <string name="recipie_ingredients">Ingredients:</string>
+    <string name="recipie_servings">Servings:</string>
+    <string name="recipie_instructions">Instructions:</string>
+
 </resources>

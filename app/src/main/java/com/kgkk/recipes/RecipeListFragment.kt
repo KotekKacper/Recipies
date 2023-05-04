@@ -54,7 +54,7 @@ class RecipeListFragment : ListFragment() {
                 inputStream.close()
             }
             // Switch back to the main thread to update the UI or perform other tasks
-            Log.i("API Output", recipes.getString(0))
+            Log.i("API Output", recipes.toString())
             val names = arrayOfNulls<String>(recipes.length())
             CocktailList.cocktailList = arrayListOf()
             for (i in names.indices) {
@@ -65,7 +65,7 @@ class RecipeListFragment : ListFragment() {
                 val instructions = recipe.getString("instructions")
 
                 names[i] = title
-                CocktailList.cocktailList.add(Cocktail(title, ingredients, instructions))
+                CocktailList.cocktailList.add(Cocktail(title, ingredients, servings, instructions))
             }
             val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
                 inflater.context, android.R.layout.simple_list_item_1, names
