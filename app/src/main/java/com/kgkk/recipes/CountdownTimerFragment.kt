@@ -1,5 +1,7 @@
 package com.kgkk.recipes
 
+import android.graphics.Color
+import android.media.SoundPool
 import android.os.*
 import android.view.*
 import android.widget.Button
@@ -10,6 +12,11 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
 
     private lateinit var countdownTimer: CountDownTimer
     private lateinit var timerText: TextView
+    private lateinit var soundPool: SoundPool
+    private var tickSoundId: Int = 0
+    private var finishSoundId: Int = 1
+
+
     private var startingTime: Long = 0
     private var countdownTimeLeft: Long = startingTime // czas początkowy
 
@@ -26,6 +33,11 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
             dialog.setListener(this)
             dialog.show(parentFragmentManager, "countdown_time_picker")
         }
+
+        soundPool = SoundPool.Builder().setMaxStreams(1).build()
+        tickSoundId = soundPool.load(requireContext(), R.raw.tick, 1)
+        finishSoundId = soundPool.load(requireContext(), R.raw.finish, 1)
+
 
         countdownTimer = createCountDownTimer()
         countdownButtonHandler(view)
@@ -55,17 +67,41 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
         if (::countdownTimer.isInitialized){
             countdownTimer.cancel()
         }
+        var secondsLeft = countdownTimeLeft / 1000 // Keep track of seconds left
         return object : CountDownTimer(countdownTimeLeft, 1000){
             override fun onTick(millisUntilFinished: Long) {
+                secondsLeft-- // Decrement seconds left
                 countdownTimeLeft = millisUntilFinished
                 updateCountdownText()
+
+                // Play sound with increasing volume for last 10 seconds
+                if (secondsLeft in 0..10) {
+                    val volume = (10 - secondsLeft) / 10.0f
+                    val soundId = soundPool.load(requireContext(), R.raw.tick, 1)
+                    soundPool.setOnLoadCompleteListener { _, _, _ ->
+                        soundPool.play(soundId, volume, volume, 1, 0, 1.0f)
+                    }
+                }
+                // Play sound at low volume for the rest of the countdown
+                else if (secondsLeft >= 10) {
+                    val soundId = soundPool.load(requireContext(), R.raw.tick, 1)
+                    soundPool.setOnLoadCompleteListener { _, _, _ ->
+                        soundPool.play(soundId, 0.1f, 0.1f, 1, 0, 1.0f)
+                    }
+                }
             }
 
             override fun onFinish() {
-                // sygnał dźwiękowy
+                // Play finish sound
+                val soundId = soundPool.load(requireContext(), R.raw.finish, 1)
+                soundPool.setOnLoadCompleteListener { _, _, _ ->
+                    soundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f)
+                }
+                timerText.setTextColor(Color.RED)
             }
         }
     }
+
 
     private fun resetButtons(view: View){
         val timerStartButton = view.findViewById<Button>(R.id.startButton)
@@ -74,6 +110,7 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
         timerStartButton.isEnabled = true
         timerPauseButton.isEnabled = false
         timerResetButton.isEnabled = false
+        timerText.setTextColor(Color.BLACK)
     }
 
     private fun countdownButtonHandler(view: View) {
