@@ -5,8 +5,10 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentTransaction
 
 
 class RecipeDetailFragment : Fragment() {
@@ -40,7 +42,7 @@ class RecipeDetailFragment : Fragment() {
             val textIngredients = view.findViewById<TextView>(R.id.textIngredients)
             textIngredients.text = ingredients.split('|').joinToString(separator = "\n- ", prefix = "- ")
             val textServings = view.findViewById<TextView>(R.id.textServings)
-            textServings.text = servings
+            textServings.text = servings.split(' ')[0]
             val textInstructions = view.findViewById<TextView>(R.id.textInstructions)
             textInstructions.text = instructions
         }
@@ -52,5 +54,20 @@ class RecipeDetailFragment : Fragment() {
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
         savedInstanceState.putLong("cocktailId", cocktailId!!.toLong())
+    }
+
+    private fun insertNestedFragment() {
+        val childFragment: Fragment = CountdownTimerFragment()
+        val transaction: FragmentTransaction = childFragmentManager.beginTransaction()
+        transaction.add(R.id.counter_container, childFragment).commit()
+    }
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        val addButton = view.findViewById<Button>(R.id.add_timer_button)
+        addButton.setOnClickListener {
+            insertNestedFragment()
+        }
     }
 }
