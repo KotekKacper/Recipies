@@ -7,18 +7,16 @@ import android.view.*
 import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProvider
 
 class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener {
 
-    private lateinit var countdownTimer: CountDownTimer
     private lateinit var timerText: TextView
-    private lateinit var soundPool: SoundPool
-    private var tickSoundId: Int = 0
-    private var finishSoundId: Int = 1
+    private lateinit var viewModel: CountdownTimerViewModel
 
-
-    private var startingTime: Long = 0
-    private var countdownTimeLeft: Long = startingTime // czas początkowy
+    private val soundPool: SoundPool by lazy {
+        SoundPool.Builder().setMaxStreams(1).build()
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -26,82 +24,78 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_countdown_timer, container, false)
-        timerText = view.findViewById(R.id.timerText)
 
+        timerText = view.findViewById(R.id.timerText)
         timerText.setOnClickListener {
             val dialog = TimePickerFragment()
             dialog.setListener(this)
             dialog.show(parentFragmentManager, "countdown_time_picker")
         }
 
-        soundPool = SoundPool.Builder().setMaxStreams(1).build()
-        tickSoundId = soundPool.load(requireContext(), R.raw.tick, 1)
-        finishSoundId = soundPool.load(requireContext(), R.raw.finish, 1)
+        viewModel = ViewModelProvider(this)[CountdownTimerViewModel::class.java]
+        viewModel.timeLeft.observe(viewLifecycleOwner) {
+            updateCountdown()
+        }
 
-
-        countdownTimer = createCountDownTimer()
         countdownButtonHandler(view)
+
         return view
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        soundPool.release()
     }
 
     override fun onTimeSet(hourOfDay: Int, minute: Int, second: Int) {
         val timeInMillis = (hourOfDay * 60 * 60 + minute * 60 + second) * 1000L
-        startingTime = timeInMillis
-        countdownTimeLeft = timeInMillis
-        countdownTimer = createCountDownTimer()
-        updateCountdownText()
+        viewModel.setTimer(timeInMillis)
+        updateCountdown()
         this.view?.let { resetButtons(it) }
     }
 
+    private fun updateCountdown() {
+        val timeLeft = viewModel.timeLeft.value!!
+        updateCountdownText(timeLeft)
+        updateCountdownSound(timeLeft)
+    }
 
-    private fun updateCountdownText() {
-        val hours = countdownTimeLeft / (1000 * 60 * 60)
-        val minutes = (countdownTimeLeft % (1000 * 60 * 60)) / (1000 * 60)
-        val seconds = (countdownTimeLeft % (1000 * 60)) / 1000
+    private fun updateCountdownText(timeLeft: Long) {
+        val hours = timeLeft / (1000 * 60 * 60)
+        val minutes = (timeLeft % (1000 * 60 * 60)) / (1000 * 60)
+        val seconds = (timeLeft % (1000 * 60)) / 1000
         val timeLeftFormatted = String.format("%02d:%02d:%02d", hours, minutes, seconds)
 
         timerText.text = timeLeftFormatted
+        if (timeLeft <= 0){
+            timerText.setTextColor(Color.RED)
+        }
     }
 
-    fun createCountDownTimer(): CountDownTimer {
-        if (::countdownTimer.isInitialized){
-            countdownTimer.cancel()
-        }
-        var secondsLeft = countdownTimeLeft / 1000 // Keep track of seconds left
-        return object : CountDownTimer(countdownTimeLeft, 1000){
-            override fun onTick(millisUntilFinished: Long) {
-                secondsLeft-- // Decrement seconds left
-                countdownTimeLeft = millisUntilFinished
-                updateCountdownText()
-
-                // Play sound with increasing volume for last 10 seconds
-                if (secondsLeft in 0..10) {
-                    val volume = (10 - secondsLeft) / 10.0f
+    private fun updateCountdownSound(timeLeft: Long) {
+        // Play sound with increasing volume for last 10 seconds
+        if (timeLeft in 0..10000) {
+            val volume = (11000 - timeLeft) / 10000.0f
                     val soundId = soundPool.load(requireContext(), R.raw.tick, 1)
                     soundPool.setOnLoadCompleteListener { _, _, _ ->
                         soundPool.play(soundId, volume, volume, 1, 0, 1.0f)
                     }
-                }
-                // Play sound at low volume for the rest of the countdown
-                else if (secondsLeft >= 10) {
+        }
+        // Play sound at low volume for the rest of the countdown
+        else if (timeLeft >= 10000) {
                     val soundId = soundPool.load(requireContext(), R.raw.tick, 1)
                     soundPool.setOnLoadCompleteListener { _, _, _ ->
                         soundPool.play(soundId, 0.1f, 0.1f, 1, 0, 1.0f)
                     }
-                }
-            }
-
-            override fun onFinish() {
-                // Play finish sound
-                val soundId = soundPool.load(requireContext(), R.raw.finish, 1)
-                soundPool.setOnLoadCompleteListener { _, _, _ ->
-                    soundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f)
-                }
-                timerText.setTextColor(Color.RED)
+        }
+        // Play finish sound
+        if (timeLeft <= 0){
+            val soundId = soundPool.load(requireContext(), R.raw.finish, 1)
+            soundPool.setOnLoadCompleteListener { _, _, _ ->
+                soundPool.play(soundId, 1.0f, 1.0f, 1, 0, 1.0f)
             }
         }
     }
-
 
     private fun resetButtons(view: View){
         val timerStartButton = view.findViewById<Button>(R.id.startButton)
@@ -118,21 +112,21 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
         val timerPauseButton = view.findViewById<Button>(R.id.pauseButton)
         val timerResetButton = view.findViewById<Button>(R.id.resetButton)
         timerStartButton.setOnClickListener {
-            countdownTimer.start()
+            viewModel.startTimer()
             timerStartButton.isEnabled = false
             timerPauseButton.isEnabled = true
             timerResetButton.isEnabled = true
         }
         timerPauseButton.setOnClickListener {
-            countdownTimer = createCountDownTimer()
+            viewModel.pauseTimer()
+            updateCountdownText(viewModel.timeLeft.value!!)
             timerStartButton.isEnabled = true
             timerPauseButton.isEnabled = false
             timerResetButton.isEnabled = true
         }
         timerResetButton.setOnClickListener {
-            countdownTimeLeft = startingTime
-            countdownTimer = createCountDownTimer()
-            updateCountdownText()
+            viewModel.stopTimer()
+            updateCountdownText(viewModel.timeLeft.value!!)
             resetButtons(view)
         }
     }
