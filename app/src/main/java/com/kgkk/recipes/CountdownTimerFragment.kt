@@ -14,6 +14,10 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
     private lateinit var timerText: TextView
     private lateinit var viewModel: CountdownTimerViewModel
 
+    private var isStartButtonEnabled = true
+    private var isPauseButtonEnabled = false
+    private var isResetButtonEnabled = false
+
     private val soundPool: SoundPool by lazy {
         SoundPool.Builder().setMaxStreams(1).build()
     }
@@ -32,6 +36,8 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
             dialog.show(parentFragmentManager, "countdown_time_picker")
         }
 
+        restoreButtonStates(savedInstanceState, view)
+
         viewModel = ViewModelProvider(this)[CountdownTimerViewModel::class.java]
         viewModel.timeLeft.observe(viewLifecycleOwner) {
             updateCountdown()
@@ -47,11 +53,33 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
         soundPool.release()
     }
 
+    override fun onSaveInstanceState(outState: Bundle) {
+        super.onSaveInstanceState(outState)
+        outState.putBoolean("isStartButtonEnabled", isStartButtonEnabled)
+        outState.putBoolean("isPauseButtonEnabled", isPauseButtonEnabled)
+        outState.putBoolean("isResetButtonEnabled", isResetButtonEnabled)
+    }
+
+
     override fun onTimeSet(hourOfDay: Int, minute: Int, second: Int) {
         val timeInMillis = (hourOfDay * 60 * 60 + minute * 60 + second) * 1000L
         viewModel.setTimer(timeInMillis)
         updateCountdown()
         this.view?.let { resetButtons(it) }
+    }
+
+    private fun restoreButtonStates(savedInstanceState: Bundle?, view: View) {
+        isStartButtonEnabled = savedInstanceState?.getBoolean("isStartButtonEnabled", true) ?: true
+        isPauseButtonEnabled = savedInstanceState?.getBoolean("isPauseButtonEnabled", false) ?: false
+        isResetButtonEnabled = savedInstanceState?.getBoolean("isResetButtonEnabled", false) ?: false
+
+        val timerStartButton = view.findViewById<Button>(R.id.startButton)
+        val timerPauseButton = view.findViewById<Button>(R.id.pauseButton)
+        val timerResetButton = view.findViewById<Button>(R.id.resetButton)
+        timerStartButton.isEnabled = isStartButtonEnabled
+        timerPauseButton.isEnabled = isPauseButtonEnabled
+        timerResetButton.isEnabled = isResetButtonEnabled
+
     }
 
     private fun updateCountdown() {
@@ -104,6 +132,9 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
         timerStartButton.isEnabled = true
         timerPauseButton.isEnabled = false
         timerResetButton.isEnabled = false
+        isStartButtonEnabled = timerStartButton.isEnabled
+        isPauseButtonEnabled = timerPauseButton.isEnabled
+        isResetButtonEnabled = timerResetButton.isEnabled
         timerText.setTextColor(Color.BLACK)
     }
 
@@ -116,6 +147,9 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
             timerStartButton.isEnabled = false
             timerPauseButton.isEnabled = true
             timerResetButton.isEnabled = true
+            isStartButtonEnabled = timerStartButton.isEnabled
+            isPauseButtonEnabled = timerPauseButton.isEnabled
+            isResetButtonEnabled = timerResetButton.isEnabled
         }
         timerPauseButton.setOnClickListener {
             viewModel.pauseTimer()
@@ -123,6 +157,9 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
             timerStartButton.isEnabled = true
             timerPauseButton.isEnabled = false
             timerResetButton.isEnabled = true
+            isStartButtonEnabled = timerStartButton.isEnabled
+            isPauseButtonEnabled = timerPauseButton.isEnabled
+            isResetButtonEnabled = timerResetButton.isEnabled
         }
         timerResetButton.setOnClickListener {
             viewModel.stopTimer()
