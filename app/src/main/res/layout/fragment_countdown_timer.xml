@@ -1,6 +1,6 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     android:orientation="vertical"
     android:gravity="center">
 
@@ -15,20 +15,33 @@
         android:id="@+id/startButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/start" />
+        android:gravity="center"
+        android:drawableTop="@drawable/play_arrow"
+        android:textSize="0sp"
+        android:paddingBottom="0dp"
+        android:paddingTop="10dp"/>
+
 
     <Button
         android:id="@+id/pauseButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/pause"
+        android:gravity="center"
+        android:drawableTop="@drawable/pause"
+        android:textSize="0sp"
+        android:paddingBottom="0dp"
+        android:paddingTop="10dp"
         android:enabled="false" />
 
     <Button
         android:id="@+id/resetButton"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="@string/reset"
+        android:gravity="center"
+        android:drawableTop="@drawable/stop"
+        android:textSize="0sp"
+        android:paddingBottom="0dp"
+        android:paddingTop="10dp"
         android:enabled="false" />
 
 </LinearLayout>
