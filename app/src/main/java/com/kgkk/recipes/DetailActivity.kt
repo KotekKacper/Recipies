@@ -1,8 +1,8 @@
 package com.kgkk.recipes
 
 import android.os.Bundle
-import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.widget.Toolbar
 
 
 class DetailActivity : AppCompatActivity() {
@@ -10,6 +10,10 @@ class DetailActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_detail)
+
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        setSupportActionBar(toolbar)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
 
         val frag: RecipeDetailFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_recipe_detail) as RecipeDetailFragment
