@@ -26,8 +26,8 @@
         <item>Kat. 2 Pozycja 3 </item>
     </string-array>
     <string name="home_tab">Start</string>
-    <string name="kat1_tab">Kategoria 1</string>
-    <string name="kat2_tab">Kategoria 2</string>
+    <string name="kat1_tab">Cakes</string>
+    <string name="kat2_tab">Cocktails</string>
     <string name="card_image">Img</string>
 
 </resources>

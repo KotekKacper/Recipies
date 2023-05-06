@@ -1,20 +1,25 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".DetailActivity" >
 
     <include
         layout="@layout/toolbar_main"
         android:id="@+id/toolbar" />
 
-    <androidx.fragment.app.FragmentContainerView
-        android:name="com.kgkk.recipes.fragments.RecipeDetailFragment"
-        android:id="@+id/fragment_recipe_detail"
+    <TextView
+        android:id="@+id/cocktail_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textAppearance="?android:attr/textAppearanceLarge" />
+
+    <ImageView
+        android:id="@+id/cocktail_image"
+        android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:layout="@layout/fragment_recipe_detail" />
+        android:adjustViewBounds="true" />
 
 </LinearLayout>
