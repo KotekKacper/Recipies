@@ -11,6 +11,7 @@ import android.widget.ListView
 import androidx.fragment.app.ListFragment
 import com.kgkk.recipes.utils.Cocktail
 import com.kgkk.recipes.utils.CocktailList
+import com.kgkk.recipes.utils.SavedImages
 import com.kgkk.recipes.Listener
 import kotlinx.coroutines.*
 import org.json.JSONArray
@@ -67,7 +68,9 @@ class RecipeListFragment : ListFragment() {
                 val instructions = recipe.getString("instructions")
 
                 names[i] = title
-                CocktailList.cocktailList.add(Cocktail(title, ingredients, servings, instructions))
+                CocktailList.cocktailList.add(Cocktail(title, ingredients, servings, instructions,
+                    SavedImages.getCocktail(i)
+                ))
             }
             val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
                 inflater.context, android.R.layout.simple_list_item_1, names

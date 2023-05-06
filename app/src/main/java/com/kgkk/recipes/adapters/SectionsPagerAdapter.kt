@@ -6,6 +6,7 @@ import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.kgkk.recipes.R
 import com.kgkk.recipes.fragments.RecipeListFragment
+import com.kgkk.recipes.fragments.Tab1Fragment
 import com.kgkk.recipes.fragments.Tab2Fragment
 import com.kgkk.recipes.fragments.TopFragment
 
@@ -19,7 +20,7 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager?) :
         when (position) {
             0 -> return TopFragment()
             1 -> return RecipeListFragment()
-            2 -> return Tab2Fragment()
+            2 -> return Tab1Fragment()
         }
         return TopFragment()
     }
