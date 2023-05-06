@@ -3,6 +3,8 @@ package com.kgkk.recipes
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import com.kgkk.recipes.fragments.RecipeDetailFragment
+import com.kgkk.recipes.utils.Constants
 
 
 class DetailActivity : AppCompatActivity() {

@@ -1,10 +1,11 @@
-package com.kgkk.recipes
+package com.kgkk.recipes.fragments
 
 import android.app.Dialog
 import android.os.Bundle
 import android.widget.NumberPicker
 import androidx.appcompat.app.AlertDialog
 import androidx.fragment.app.DialogFragment
+import com.kgkk.recipes.R
 
 class TimePickerFragment : DialogFragment() {
 

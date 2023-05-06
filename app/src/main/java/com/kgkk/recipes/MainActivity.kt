@@ -9,6 +9,11 @@ import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.FragmentTransaction
+import androidx.viewpager.widget.ViewPager
+import com.google.android.material.tabs.TabLayout
+import com.kgkk.recipes.adapters.SectionsPagerAdapter
+import com.kgkk.recipes.fragments.RecipeDetailFragment
+import com.kgkk.recipes.utils.Constants
 
 
 class MainActivity : AppCompatActivity(), Listener {
@@ -18,6 +23,12 @@ class MainActivity : AppCompatActivity(), Listener {
 
         val toolbar = findViewById<Toolbar>(R.id.toolbar)
         setSupportActionBar(toolbar)
+
+        val pagerAdapter = SectionsPagerAdapter(this, supportFragmentManager)
+        val pager = findViewById<View>(R.id.pager) as ViewPager
+        pager.adapter = pagerAdapter
+        val tabLayout = findViewById<View>(R.id.tabs) as TabLayout
+        tabLayout.setupWithViewPager(pager)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {

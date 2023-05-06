@@ -1,4 +1,4 @@
-package com.kgkk.recipes
+package com.kgkk.recipes.fragments
 
 import android.content.Context
 import android.os.Bundle
@@ -9,10 +9,12 @@ import android.view.ViewGroup
 import android.widget.ArrayAdapter
 import android.widget.ListView
 import androidx.fragment.app.ListFragment
+import com.kgkk.recipes.utils.Cocktail
+import com.kgkk.recipes.utils.CocktailList
+import com.kgkk.recipes.Listener
 import kotlinx.coroutines.*
 import org.json.JSONArray
 import org.json.JSONException
-import org.json.JSONObject
 import java.net.HttpURLConnection
 import java.net.URL
 
@@ -83,7 +85,7 @@ class RecipeListFragment : ListFragment() {
 
     override fun onListItemClick(listView: ListView, itemView: View, position: Int, id: Long) {
         if (listener != null) {
-            listener?.itemClicked(id.toInt());
+            listener?.itemClicked(id.toInt())
         }
     }
 

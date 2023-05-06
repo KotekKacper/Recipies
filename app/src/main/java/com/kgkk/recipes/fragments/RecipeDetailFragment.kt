@@ -1,4 +1,4 @@
-package com.kgkk.recipes
+package com.kgkk.recipes.fragments
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,6 +9,8 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
+import com.kgkk.recipes.utils.CocktailList
+import com.kgkk.recipes.R
 
 
 class RecipeDetailFragment : Fragment() {
