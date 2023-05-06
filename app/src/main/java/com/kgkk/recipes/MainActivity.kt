@@ -48,19 +48,20 @@ class MainActivity : AppCompatActivity(), Listener {
     }
 
     override fun itemClicked(id: Int) {
+        // tablet specific (not used currently)
         val fragmentContainer: View? = findViewById(R.id.fragment_container)
-        if (fragmentContainer != null) {
-            val details = RecipeDetailFragment()
-            val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
-            details.setCocktail(id)
-            ft.replace(R.id.fragment_container, details)
-            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
-            ft.addToBackStack(null)
-            ft.commit()
-        } else {
+//        if (fragmentContainer != null) {
+//            val details = RecipeDetailFragment()
+//            val ft: FragmentTransaction = supportFragmentManager.beginTransaction()
+//            details.setCocktail(id)
+//            ft.replace(R.id.fragment_container, details)
+//            ft.setTransition(FragmentTransaction.TRANSIT_FRAGMENT_FADE)
+//            ft.addToBackStack(null)
+//            ft.commit()
+//        } else {
             val intent = Intent(this, DetailActivity::class.java)
             intent.putExtra(Constants.EXTRA_COCKTAIL_ID, id)
             startActivity(intent)
-        }
+//        }
     }
 }
