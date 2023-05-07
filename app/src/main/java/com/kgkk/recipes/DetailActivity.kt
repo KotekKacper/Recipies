@@ -1,6 +1,8 @@
 package com.kgkk.recipes
 
+import android.content.Intent
 import android.os.Bundle
+import android.view.View
 import android.widget.ImageView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
@@ -18,6 +20,8 @@ import com.kgkk.recipes.viewmodels.RecipeListViewModel
 class DetailActivity : AppCompatActivity() {
 
     private lateinit var recipeViewModel: RecipeListViewModel
+    private var recipeId: Int = 0
+    private var recipeType: String = COCKTAIL_RECIPE_TYPE
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -26,21 +30,24 @@ class DetailActivity : AppCompatActivity() {
         val frag: RecipeDetailFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_recipe_detail) as RecipeDetailFragment
 
-        val recipeType = intent.extras!!.getString(EXTRA_RECIPE_TYPE)
-        val recipeId = intent.extras!!.getInt(EXTRA_RECIPE_ID)
+        recipeType = intent.extras!!.getString(EXTRA_RECIPE_TYPE)!!
+        recipeId = intent.extras!!.getInt(EXTRA_RECIPE_ID)
         frag.setRecipe(recipeType, recipeId)
 
         recipeViewModel = ViewModelProvider(this)[RecipeListViewModel::class.java]
 
-        if (recipeType == COCKTAIL_RECIPE_TYPE){
-            recipeViewModel.cocktailList.observe(this) { cocktails ->
-                // Wyświetlamy informacje o koktajlu
-                fillRecipe(cocktails, recipeId)
+        when (recipeType) {
+            COCKTAIL_RECIPE_TYPE -> {
+                recipeViewModel.cocktailList.observe(this) { cocktails ->
+                    // Wyświetlamy informacje o koktajlu
+                    fillRecipe(cocktails, recipeId)
+                }
             }
-        } else if (recipeType == CAKE_RECIPE_TYPE){
-            recipeViewModel.cakeList.observe(this) { cakes ->
-                // Wyświetlamy informacje o cieście
-                fillRecipe(cakes, recipeId)
+            CAKE_RECIPE_TYPE -> {
+                recipeViewModel.cakeList.observe(this) { cakes ->
+                    // Wyświetlamy informacje o cieście
+                    fillRecipe(cakes, recipeId)
+                }
             }
         }
     }
@@ -59,4 +66,28 @@ class DetailActivity : AppCompatActivity() {
         val actionBar: ActionBar? = supportActionBar
         actionBar?.setDisplayHomeAsUpEnabled(true)
     }
+
+    fun onClickSend(view: View) {
+        var recipe: Recipe? = null
+        when(recipeType){
+            COCKTAIL_RECIPE_TYPE -> recipe = recipeViewModel.cocktailList.value!![recipeId]
+            CAKE_RECIPE_TYPE -> recipe = recipeViewModel.cakeList.value!![recipeId]
+        }
+
+        val sendIntent: Intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, formatRecipe(recipe!!))
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, null)
+        startActivity(shareIntent)
+    }
+
+    private fun formatRecipe(recipe: Recipe): String {
+        return "${recipe.name}\n\n" +
+                "Ingredients:\n${recipe.ingredients.replace("|", "\n")}\n\n" +
+                "Servings: ${recipe.servings}\n\n" +
+                "Instructions:\n${recipe.instructions}"
+    }
+
 }

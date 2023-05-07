@@ -30,5 +30,6 @@
     <string name="kat2_tab">Cakes</string>
     <string name="card_image">Img</string>
     <string name="image_desc">Image</string>
+    <string name="send_to_different_app">Send</string>
 
 </resources>
