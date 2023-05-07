@@ -31,5 +31,7 @@
     <string name="card_image">Img</string>
     <string name="image_desc">Image</string>
     <string name="send_to_different_app">Send</string>
+    <string name="title_on_title_screen">Welcome to Recipe App!</string>
+    <string name="description_on_title_screen">It\'s the best place to look for great recipes for cocktails and cakes. Enjoy!</string>
 
 </resources>
