@@ -33,5 +33,6 @@
     <string name="send_to_different_app">Send</string>
     <string name="title_on_title_screen">Welcome to Recipe App!</string>
     <string name="description_on_title_screen">It\'s the best place to look for great recipes for cocktails and cakes. Enjoy!</string>
+    <string name="app_icon_image_description">App icon image</string>
 
 </resources>
