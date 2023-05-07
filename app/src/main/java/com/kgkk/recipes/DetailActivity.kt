@@ -26,16 +26,9 @@ class DetailActivity : AppCompatActivity() {
         val frag: RecipeDetailFragment =
             supportFragmentManager.findFragmentById(R.id.fragment_recipe_detail) as RecipeDetailFragment
 
-
         val recipeType = intent.extras!!.getString(EXTRA_RECIPE_TYPE)
         val recipeId = intent.extras!!.getInt(EXTRA_RECIPE_ID)
         frag.setRecipe(recipeType, recipeId)
-
-        // Ustawiamy pasek narzędzi jako pasek aplikacji aktywności
-        val toolbar = findViewById<Toolbar>(R.id.toolbar)
-        setSupportActionBar(toolbar)
-        val actionBar: ActionBar? = supportActionBar
-        actionBar?.setDisplayHomeAsUpEnabled(true)
 
         recipeViewModel = ViewModelProvider(this)[RecipeListViewModel::class.java]
 
@@ -53,10 +46,17 @@ class DetailActivity : AppCompatActivity() {
     }
 
     private fun fillRecipe(recipeList: List<Recipe>, recipeId: Int){
-        val cocktailName: String = recipeList[recipeId].name
-        val cocktailImage: Int = recipeList[recipeId].imageId
+        val recipeName: String = recipeList[recipeId].name
+        val recipeImage: Int = recipeList[recipeId].imageId
         val imageView = findViewById<ImageView>(R.id.cocktail_image)
-        imageView.setImageDrawable(ContextCompat.getDrawable(this, cocktailImage))
-        imageView.contentDescription = cocktailName
+        imageView.setImageDrawable(ContextCompat.getDrawable(this, recipeImage))
+        imageView.contentDescription = recipeName
+
+        // Ustawiamy pasek narzędzi jako pasek aplikacji aktywności
+        val toolbar = findViewById<Toolbar>(R.id.toolbar)
+        toolbar.title = recipeName
+        setSupportActionBar(toolbar)
+        val actionBar: ActionBar? = supportActionBar
+        actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 }

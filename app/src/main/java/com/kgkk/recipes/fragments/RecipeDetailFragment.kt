@@ -61,8 +61,6 @@ class RecipeDetailFragment : Fragment() {
         if (recipeList.isNotEmpty()) {
             // Use the cocktails data to populate your UI
             val (name, ingredients, servings, instructions) = recipeList[recipeId]
-            val title = view.findViewById<TextView>(R.id.textTitle)
-            title.text = name
             val textIngredients = view.findViewById<TextView>(R.id.textIngredients)
             textIngredients.text =
                 ingredients.split('|').joinToString(separator = "\n- ", prefix = "- ")
