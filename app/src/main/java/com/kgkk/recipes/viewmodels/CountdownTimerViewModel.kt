@@ -1,4 +1,4 @@
-package com.kgkk.recipes
+package com.kgkk.recipes.viewmodels
 
 import android.os.CountDownTimer
 import androidx.lifecycle.LiveData

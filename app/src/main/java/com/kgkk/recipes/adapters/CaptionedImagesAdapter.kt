@@ -1,7 +1,6 @@
 package com.kgkk.recipes.adapters
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.TextView
@@ -11,7 +10,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kgkk.recipes.R
 
 
-class CaptionedImagesAdapter(private var captions: Array<String?>,
+class CaptionedImagesAdapter(private var captions: Array<String>,
                              private var imageIds: IntArray
 ): RecyclerView.Adapter<CaptionedImagesAdapter.ViewHolder>() {
 
@@ -23,6 +22,12 @@ class CaptionedImagesAdapter(private var captions: Array<String?>,
 
     fun setListener(listener: Listener?) {
         this.listener = listener
+    }
+
+    fun setData(captions: Array<String>, imageIds: IntArray) {
+        this.captions = captions
+        this.imageIds = imageIds
+        notifyDataSetChanged()
     }
 
     class ViewHolder(itemView: CardView) : RecyclerView.ViewHolder(itemView){

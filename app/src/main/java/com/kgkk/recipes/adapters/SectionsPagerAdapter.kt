@@ -5,7 +5,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
 import androidx.fragment.app.FragmentPagerAdapter
 import com.kgkk.recipes.R
-import com.kgkk.recipes.fragments.RecipeListFragment
 import com.kgkk.recipes.fragments.Tab1Fragment
 import com.kgkk.recipes.fragments.Tab2Fragment
 import com.kgkk.recipes.fragments.TopFragment
@@ -19,8 +18,8 @@ class SectionsPagerAdapter(private val context: Context, fm: FragmentManager?) :
     override fun getItem(position: Int): Fragment {
         when (position) {
             0 -> return TopFragment()
-            1 -> return RecipeListFragment()
-            2 -> return Tab1Fragment()
+            1 -> return Tab1Fragment()
+            2 -> return Tab2Fragment()
         }
         return TopFragment()
     }

@@ -8,7 +8,7 @@ import android.widget.Button
 import android.widget.TextView
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
-import com.kgkk.recipes.CountdownTimerViewModel
+import com.kgkk.recipes.viewmodels.CountdownTimerViewModel
 import com.kgkk.recipes.R
 
 class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener {

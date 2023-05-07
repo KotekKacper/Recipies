@@ -20,6 +20,14 @@
         android:id="@+id/cocktail_image"
         android:layout_height="wrap_content"
         android:layout_width="match_parent"
-        android:adjustViewBounds="true" />
+        android:adjustViewBounds="true"
+        android:contentDescription="@string/image_desc" />
+
+    <androidx.fragment.app.FragmentContainerView
+        android:name="com.kgkk.recipes.fragments.RecipeDetailFragment"
+        android:id="@+id/fragment_recipe_detail"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:layout="@layout/fragment_recipe_detail" />
 
 </LinearLayout>
