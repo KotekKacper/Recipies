@@ -2,7 +2,6 @@ package com.kgkk.recipes
 
 import android.os.Bundle
 import android.widget.ImageView
-import android.widget.TextView
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
@@ -55,8 +54,6 @@ class DetailActivity : AppCompatActivity() {
 
     private fun fillRecipe(recipeList: List<Recipe>, recipeId: Int){
         val cocktailName: String = recipeList[recipeId].name
-        val textView = findViewById<TextView>(R.id.cocktail_text)
-        textView.text = cocktailName
         val cocktailImage: Int = recipeList[recipeId].imageId
         val imageView = findViewById<ImageView>(R.id.cocktail_image)
         imageView.setImageDrawable(ContextCompat.getDrawable(this, cocktailImage))
