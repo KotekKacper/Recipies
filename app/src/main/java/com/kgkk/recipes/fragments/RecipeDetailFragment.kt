@@ -10,19 +10,23 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentTransaction
 import androidx.lifecycle.ViewModelProvider
 import com.kgkk.recipes.R
-import com.kgkk.recipes.viewmodels.CocktailListViewModel
+import com.kgkk.recipes.utils.Constants.CAKE_RECIPE_TYPE
+import com.kgkk.recipes.utils.Constants.COCKTAIL_RECIPE_TYPE
+import com.kgkk.recipes.utils.Recipe
+import com.kgkk.recipes.viewmodels.RecipeListViewModel
 
 
 class RecipeDetailFragment : Fragment() {
 
-    private var cocktailId: Int? = null
-    private lateinit var viewModel: CocktailListViewModel
+    private var recipeId: Int? = null
+    private var recipeType: String? = null
+    private lateinit var viewModel: RecipeListViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = ViewModelProvider(this)[CocktailListViewModel::class.java]
+        viewModel = ViewModelProvider(this)[RecipeListViewModel::class.java]
         if (savedInstanceState != null) {
-            cocktailId = savedInstanceState.getLong("cocktailId").toInt()
+            recipeId = savedInstanceState.getLong("recipeId").toInt()
         }
     }
 
@@ -37,19 +41,13 @@ class RecipeDetailFragment : Fragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        viewModel.cocktailList.observe(viewLifecycleOwner) { cocktails ->
-            if (cocktails.isNotEmpty()) {
-                // Use the cocktails data to populate your UI
-                val (name, ingredients, servings, instructions) = cocktails[cocktailId!!]
-                val title = view.findViewById<TextView>(R.id.textTitle)
-                title.text = name
-                val textIngredients = view.findViewById<TextView>(R.id.textIngredients)
-                textIngredients.text =
-                    ingredients.split('|').joinToString(separator = "\n- ", prefix = "- ")
-                val textServings = view.findViewById<TextView>(R.id.textServings)
-                textServings.text = servings.split(' ')[0]
-                val textInstructions = view.findViewById<TextView>(R.id.textInstructions)
-                textInstructions.text = instructions
+        if (recipeType == COCKTAIL_RECIPE_TYPE){
+            viewModel.cocktailList.observe(viewLifecycleOwner) { cocktails ->
+                recipeId?.let { fillRecipe(view, cocktails, it) }
+            }
+        } else if (recipeType == CAKE_RECIPE_TYPE){
+            viewModel.cakeList.observe(viewLifecycleOwner) { cakes ->
+                recipeId?.let { fillRecipe(view, cakes, it) }
             }
         }
 
@@ -59,12 +57,29 @@ class RecipeDetailFragment : Fragment() {
         }
     }
 
-    fun setCocktail(id: Int) {
-        this.cocktailId = id
+    private fun fillRecipe(view: View, recipeList: List<Recipe>, recipeId: Int){
+        if (recipeList.isNotEmpty()) {
+            // Use the cocktails data to populate your UI
+            val (name, ingredients, servings, instructions) = recipeList[recipeId]
+            val title = view.findViewById<TextView>(R.id.textTitle)
+            title.text = name
+            val textIngredients = view.findViewById<TextView>(R.id.textIngredients)
+            textIngredients.text =
+                ingredients.split('|').joinToString(separator = "\n- ", prefix = "- ")
+            val textServings = view.findViewById<TextView>(R.id.textServings)
+            textServings.text = servings.split(' ')[0]
+            val textInstructions = view.findViewById<TextView>(R.id.textInstructions)
+            textInstructions.text = instructions
+        }
+    }
+
+    fun setRecipe(type: String?, id: Int) {
+        this.recipeType = type
+        this.recipeId = id
     }
 
     override fun onSaveInstanceState(savedInstanceState: Bundle) {
-        savedInstanceState.putLong("cocktailId", cocktailId!!.toLong())
+        savedInstanceState.putLong("cocktailId", recipeId!!.toLong())
     }
 
     private fun insertNestedFragment() {

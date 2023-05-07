@@ -12,13 +12,13 @@ import androidx.recyclerview.widget.RecyclerView
 import com.kgkk.recipes.DetailActivity
 import com.kgkk.recipes.R
 import com.kgkk.recipes.adapters.CaptionedImagesAdapter
-import com.kgkk.recipes.utils.Constants.EXTRA_COCKTAIL_ID
-import com.kgkk.recipes.viewmodels.CocktailListViewModel
+import com.kgkk.recipes.utils.Constants
+import com.kgkk.recipes.viewmodels.RecipeListViewModel
 
 
 class Tab1Fragment : Fragment() {
 
-    private lateinit var viewModel: CocktailListViewModel
+    private lateinit var viewModel: RecipeListViewModel
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -32,7 +32,7 @@ class Tab1Fragment : Fragment() {
         cocktailRecycler.adapter = adapter
 
         // Create and observe the ViewModel's cocktailList property
-        viewModel = ViewModelProvider(this)[CocktailListViewModel::class.java]
+        viewModel = ViewModelProvider(this)[RecipeListViewModel::class.java]
         viewModel.cocktailList.observe(viewLifecycleOwner) { cocktails ->
             val cocktailNames = cocktails.map { it.name }.toTypedArray()
             val cocktailImages = cocktails.map { it.imageId }.toIntArray()
@@ -45,7 +45,8 @@ class Tab1Fragment : Fragment() {
         adapter.setListener(object : CaptionedImagesAdapter.Listener {
             override fun onClick(position: Int) {
                 val intent = Intent(activity, DetailActivity::class.java)
-                intent.putExtra(EXTRA_COCKTAIL_ID, position)
+                intent.putExtra(Constants.EXTRA_RECIPE_TYPE, Constants.COCKTAIL_RECIPE_TYPE)
+                intent.putExtra(Constants.EXTRA_RECIPE_ID, position)
                 activity!!.startActivity(intent)
             }
         })

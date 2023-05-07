@@ -8,11 +8,9 @@ import android.view.View
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
-import androidx.fragment.app.FragmentTransaction
 import androidx.viewpager.widget.ViewPager
 import com.google.android.material.tabs.TabLayout
 import com.kgkk.recipes.adapters.SectionsPagerAdapter
-import com.kgkk.recipes.fragments.RecipeDetailFragment
 import com.kgkk.recipes.utils.Constants
 
 
@@ -60,7 +58,7 @@ class MainActivity : AppCompatActivity(), Listener {
 //            ft.commit()
 //        } else {
             val intent = Intent(this, DetailActivity::class.java)
-            intent.putExtra(Constants.EXTRA_COCKTAIL_ID, id)
+            intent.putExtra(Constants.EXTRA_RECIPE_ID, id)
             startActivity(intent)
 //        }
     }
