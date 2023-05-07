@@ -67,7 +67,7 @@ class DetailActivity : AppCompatActivity() {
         actionBar?.setDisplayHomeAsUpEnabled(true)
     }
 
-    fun onClickSend(view: View) {
+    fun onClickSend(view: View) { // view must be an argument or FAB won't work
         var recipe: Recipe? = null
         when(recipeType){
             COCKTAIL_RECIPE_TYPE -> recipe = recipeViewModel.cocktailList.value!![recipeId]
