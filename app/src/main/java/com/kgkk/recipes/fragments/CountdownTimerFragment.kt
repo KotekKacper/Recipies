@@ -137,7 +137,7 @@ class CountdownTimerFragment : Fragment(), TimePickerFragment.OnTimeSetListener 
         isStartButtonEnabled = timerStartButton.isEnabled
         isPauseButtonEnabled = timerPauseButton.isEnabled
         isResetButtonEnabled = timerResetButton.isEnabled
-        timerText.setTextColor(Color.BLACK)
+        timerText.setTextColor(Color.YELLOW)
     }
 
     private fun countdownButtonHandler(view: View) {
