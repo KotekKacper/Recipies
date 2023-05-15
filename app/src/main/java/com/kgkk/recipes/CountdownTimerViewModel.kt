@@ -20,30 +20,24 @@ class CountdownTimerViewModel : ViewModel() {
         startTime = setTime
         _timeLeft.value = timeInMillis
     }
-
     fun startTimer() {
         timer = createCountDownTimer(startTime)
         timer.start()
     }
-
     fun pauseTimer() {
         startTime = timeLeft.value!!
         timer.cancel()
     }
-
     fun stopTimer() {
         startTime = setTime
         _timeLeft.value = setTime
         timer.cancel()
     }
-
     private fun createCountDownTimer(timeInMillis: Long): CountDownTimer {
         return object : CountDownTimer(timeInMillis, 1000) {
-
             override fun onTick(millisUntilFinished: Long) {
                 _timeLeft.value = millisUntilFinished
             }
-
             override fun onFinish() {
                 _timeLeft.value = 0
             }
