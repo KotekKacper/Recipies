@@ -27,8 +27,7 @@ class RecipeListFragment : ListFragment() {
     ): View? {
 
         lateinit var recipes: JSONArray
-
-        // Launch a coroutine to perform the task
+        // Pobieranie danych z API
         GlobalScope.launch(Dispatchers.Main) {
             // Switch to a background thread
             withContext(Dispatchers.IO) {
@@ -43,17 +42,14 @@ class RecipeListFragment : ListFragment() {
                 val response = inputStream.bufferedReader().use { it.readText() }
                 try {
                     val jsonArray = JSONArray(response)
-                    // Do something with the JSON array
                     recipes = jsonArray
                 } catch (e: JSONException) {
-                    // Handle the error
                     Log.e("Error recipe", "Couldn't read json array")
                 }
 
                 connection.disconnect()
                 inputStream.close()
             }
-            // Switch back to the main thread to update the UI or perform other tasks
             Log.i("API Output", recipes.toString())
             val names = arrayOfNulls<String>(recipes.length())
             CocktailList.cocktailList = arrayListOf()
@@ -86,5 +82,4 @@ class RecipeListFragment : ListFragment() {
             listener?.itemClicked(id.toInt());
         }
     }
-
 }

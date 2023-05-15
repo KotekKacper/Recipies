@@ -28,6 +28,7 @@ class RecipeDetailFragment : Fragment() {
         return inflater.inflate(R.layout.fragment_recipe_detail, container, false)
     }
 
+    // Ustawianie elementów odebranych z API
     @SuppressLint("SetTextI18n")
     override fun onStart() {
         super.onStart()
